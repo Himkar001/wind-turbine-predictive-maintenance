@@ -1,0 +1,70 @@
+# ── Core ──────────────────────────────────────────
+numpy==1.26.4
+pandas==2.2.2
+scipy==1.13.0
+
+# ── ML Models ─────────────────────────────────────
+scikit-learn==1.4.2
+xgboost==2.0.3
+lightgbm==4.3.0
+joblib==1.4.2
+
+# ── Deep Learning ─────────────────────────────────
+torch==2.3.0
+tensorflow==2.16.1
+
+# ── Time Series ───────────────────────────────────
+statsmodels==0.14.2
+
+# ── LangChain core (pinned together — must match) ─
+langchain-core==0.2.43
+langchain==0.2.16
+langchain-community==0.2.16
+langchain-text-splitters==0.2.4
+langsmith==0.1.147
+
+# ── LangGraph ─────────────────────────────────────
+langgraph==0.2.4
+
+# ── LLM Providers ─────────────────────────────────
+langchain-groq==0.1.9
+langchain-google-genai==1.0.10
+openai==1.30.1
+groq==0.9.0
+
+# ── Vector DB & Embeddings ────────────────────────
+chromadb==0.5.0
+faiss-cpu==1.8.0
+sentence-transformers==3.0.0
+
+# ── Backend ───────────────────────────────────────
+fastapi==0.111.0
+uvicorn==0.29.0
+pydantic==2.7.1
+python-multipart==0.0.9
+websockets==12.0
+
+# ── Database ──────────────────────────────────────
+sqlalchemy==2.0.30
+psycopg2-binary==2.9.9
+alembic==1.13.1
+
+# ── Config & Env ──────────────────────────────────
+python-dotenv==1.0.1
+pyyaml==6.0.1
+
+# ── Visualization ─────────────────────────────────
+plotly==5.22.0
+matplotlib==3.9.0
+seaborn==0.13.2
+
+# ── Alerts ────────────────────────────────────────
+sendgrid==6.11.0
+twilio==9.1.0
+
+# ── Dev & Testing ─────────────────────────────────
+pytest==8.2.0
+pytest-asyncio==0.23.6
+black==24.4.2
+flake8==7.0.0
+ipykernel==6.29.4

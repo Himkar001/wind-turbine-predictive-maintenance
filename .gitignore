@@ -216,3 +216,26 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ── Generated data files ───────────────────────────
+data/
+*.csv
+*.parquet
+*.pkl
+*.h5
+
+# ── ML model artifacts ─────────────────────────────
+models/saved/
+*.joblib
+*.pt
+*.pth
+
+# ── Logs ───────────────────────────────────────────
+logs/
+*.log
+
+# ── Env ────────────────────────────────────────────
+.env
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
