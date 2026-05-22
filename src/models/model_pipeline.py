@@ -292,7 +292,7 @@ class PredictiveMaintenancePipeline:
 
 def run_pipeline_demo(
     sample_path: str = "data/processed/test.parquet",
-):
+    ):
 
     logger.info("=" * 60)
     logger.info("Unified Pipeline Demo")
@@ -300,7 +300,11 @@ def run_pipeline_demo(
 
     df = pd.read_parquet(sample_path)
 
-    sample_df = df.head(1000).copy()
+    logger.info("Loaded %d rows × %d columns from %s", len(df), df.shape[1], sample_path)
+    logger.info("Turbines in test set: %s", df["turbine_id"].unique().tolist())
+
+    # Run on full test set (all turbines, no cap)
+    sample_df = df.copy()
 
     pipeline = PredictiveMaintenancePipeline()
 
