@@ -37,7 +37,7 @@ from sklearn.preprocessing import (
 # Digital Twin Import
 # ─────────────────────────────────────────────
 
-from digital_twin import DigitalTwinEngine
+from src.twin.digital_twin import DigitalTwinEngine
 
 
 # ─────────────────────────────────────────────
@@ -591,49 +591,135 @@ def get_feature_columns(
 # Train / Val / Test Split
 # ─────────────────────────────────────────────
 
-def split_data_by_time(
-    df: pd.DataFrame,
-    train_ratio: float = 0.70,
-    val_ratio: float = 0.15
-):
+def split_data(df: pd.DataFrame, config: dict) -> tuple:
+    """
+    Hybrid split:
+    Step 1 — Time-based split per turbine (70/15/15)
+    Step 2 — Check which fault classes are missing from train
+    Step 3 — For each missing class, move its earliest fault
+              window from val/test into train
+    Temporal order is always preserved — no data leakage.
+    """
+    train_r = config["data_generation"]["train_split"]
+    val_r   = config["data_generation"]["val_split"]
 
-    logger.info("Splitting dataset")
+    trains, vals, tests = [], [], []
 
-    df = (
-        df
-        .sort_values("timestamp")
-        .reset_index(drop=True)
-    )
+    for tid, group in df.groupby("turbine_id"):
+        group = group.sort_values("timestamp").reset_index(drop=True)
+        n     = len(group)
+        t_end = int(n * train_r)
+        v_end = int(n * (train_r + val_r))
 
-    n = len(df)
+        trains.append(group.iloc[:t_end].copy())
+        vals.append(group.iloc[t_end:v_end].copy())
+        tests.append(group.iloc[v_end:].copy())
 
-    train_end = int(n * train_ratio)
+    train_df = pd.concat(trains).reset_index(drop=True)
+    val_df   = pd.concat(vals).reset_index(drop=True)
+    test_df  = pd.concat(tests).reset_index(drop=True)
 
-    val_end = int(
-        n * (train_ratio + val_ratio)
-    )
+    # ── Step 2: find missing fault classes in train ──
+    all_classes   = set(df["fault_type"].unique())
+    train_classes = set(train_df["fault_type"].unique())
+    missing       = all_classes - train_classes
 
-    train_df = df.iloc[:train_end].copy()
+    if missing:
+        logger.info(f"  Missing classes in train: {missing}")
+        logger.info("  Applying hybrid fix — moving fault windows into train ...")
 
-    val_df = df.iloc[
-        train_end:val_end
-    ].copy()
+        # Work on per-turbine level to preserve order
+        new_trains, new_vals, new_tests = [], [], []
 
-    test_df = df.iloc[
-        val_end:
-    ].copy()
+        for tid in df["turbine_id"].unique():
+            t_grp = train_df[train_df["turbine_id"] == tid].copy()
+            v_grp = val_df[val_df["turbine_id"] == tid].copy()
+            te_grp = test_df[test_df["turbine_id"] == tid].copy()
 
-    logger.info(
-        f"Train: {len(train_df):,} | "
-        f"Val: {len(val_df):,} | "
-        f"Test: {len(test_df):,}"
-    )
+            for fault_class in missing:
+                # Check if this turbine has this fault in val or test
+                fault_in_val  = v_grp[v_grp["fault_type"] == fault_class]
+                fault_in_test = te_grp[te_grp["fault_type"] == fault_class]
 
-    return (
-        train_df,
-        val_df,
-        test_df
-    )
+                source      = None
+                source_name = None
+
+                if len(fault_in_val) > 0:
+                    source      = v_grp
+                    source_name = "val"
+                elif len(fault_in_test) > 0:
+                    source      = te_grp
+                    source_name = "test"
+
+                if source is None:
+                    continue
+
+                # Find earliest fault timestamp for this class
+                fault_rows  = source[source["fault_type"] == fault_class]
+                fault_start = fault_rows["timestamp"].min()
+
+                # Define window: 2 days before fault start → fault end
+                # This gives the model the run-up AND the fault itself
+                window_start = fault_start - pd.Timedelta(days=2)
+                window_end   = fault_rows["timestamp"].max()
+
+                window = source[
+                    (source["timestamp"] >= window_start) &
+                    (source["timestamp"] <= window_end)
+                ].copy()
+
+                logger.info(
+                    f"    [{tid}] Moving {fault_class} window "
+                    f"({len(window):,} rows) from {source_name} → train"
+                )
+
+                # Add window to train
+                t_grp = pd.concat([t_grp, window]).sort_values("timestamp")
+
+                # Remove window from its source split
+                if source_name == "val":
+                    v_grp = v_grp[
+                        ~((v_grp["timestamp"] >= window_start) &
+                          (v_grp["timestamp"] <= window_end))
+                    ]
+                else:
+                    te_grp = te_grp[
+                        ~((te_grp["timestamp"] >= window_start) &
+                          (te_grp["timestamp"] <= window_end))
+                    ]
+
+            new_trains.append(t_grp)
+            new_vals.append(v_grp)
+            new_tests.append(te_grp)
+
+        train_df = pd.concat(new_trains).reset_index(drop=True)
+        val_df   = pd.concat(new_vals).reset_index(drop=True)
+        test_df  = pd.concat(new_tests).reset_index(drop=True)
+
+    else:
+        logger.info("  All fault classes present in train ✓")
+
+    # ── Step 3: verify ───────────────────────────────
+    final_train_classes = set(train_df["fault_type"].unique())
+    still_missing = all_classes - final_train_classes
+
+    if still_missing:
+        logger.warning(f"  Still missing after hybrid fix: {still_missing}")
+    else:
+        logger.info("  Hybrid split verified — all classes in train ✓")
+
+    logger.info(f"  Train: {len(train_df):,} rows")
+    logger.info(f"  Val  : {len(val_df):,} rows")
+    logger.info(f"  Test : {len(test_df):,} rows")
+
+    # Log class distribution in train
+    logger.info("  Train fault class distribution:")
+    dist = train_df["fault_type"].value_counts()
+    for fault, count in dist.items():
+        pct = count / len(train_df) * 100
+        logger.info(f"    {fault:30s} {count:>8,}  ({pct:.1f}%)")
+
+    return train_df, val_df, test_df
 
 
 # ─────────────────────────────────────────────
@@ -784,7 +870,7 @@ def run_preprocessing_pipeline(
         train_df,
         val_df,
         test_df
-    ) = split_data_by_time(df)
+    ) = split_data(df,config)
 
     (
         train_df,
