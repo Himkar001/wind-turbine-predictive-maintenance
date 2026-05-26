@@ -1,0 +1,81 @@
+{
+  "turbine_id": "WTG-002",
+  "timestamp": "2026-05-02 11:45:20.022238",
+  "generated_at": "2026-05-26T21:41:08.184713+00:00",
+  "report_path": "outputs\\reports\\WTG-002_HIGH_20260526_214108.md",
+  "alert": {
+    "risk_score": 0.8085619807243347,
+    "risk_tier": "HIGH",
+    "anomaly_score": 0.8784650564193726,
+    "fault_type": "bearing_failure",
+    "fault_confidence": 0.9400848150253296,
+    "rul_days": 16.904403686523438,
+    "rul_urgency": "low"
+  },
+  "rca": {
+    "primary_cause": "The bearing failure is likely caused by excessive bearing temperature due to inadequate cooling.",
+    "causal_chain": [
+      "The bearing temperature has been increasing over the past 2 hours (bearing_temp_mean_2hr = -1.1301, bearing_temp_std_2hr = -0.4297).",
+      "The increased bearing temperature has resulted in a higher bearing stress index (bearing_stress_index = -0.3257).",
+      "The excessive bearing stress has led to a bearing failure."
+    ],
+    "affected_components": [
+      "bearing",
+      "bearing cooling system"
+    ],
+    "confidence": "HIGH"
+  },
+  "recommendation": {
+    "procedure": " Shut down the turbine safely, activate nacelle lock and lockout/tagout, and drain gearbox oil to prevent further damage. Perform vibration spectrum analysis and check oil sample for metallic particles to confirm the bearing failure. Inspect the bearing housing for discoloration or oil leakage and measure shaft dimensions before removal. Replace the bearing with a new one, following the specified replacement procedure.",
+    "safety_warnings": [
+      "Never exceed 110\u00b0C when heating the new bearing.",
+      "Always use a hydraulic bearing puller and never hammer the bearing race."
+    ],
+    "estimated_downtime": "24 hours"
+  },
+  "schedule": {
+    "priority_rank": 2,
+    "recommended_action": "Shut down WTG-002 for immediate maintenance to replace the bearing and inspect the affected components.",
+    "maintenance_type": "corrective",
+    "deadline_days": 3,
+    "assigned_team": "Mechanical Team A",
+    "estimated_downtime_hours": 24.0
+  },
+  "parts": {
+    "order_urgency": "immediate",
+    "estimated_cost_usd": 8915,
+    "required_parts": [
+      {
+        "part_name": "Main Shaft Bearing",
+        "part_number": "BRG-MSB-001",
+        "qty": 1,
+        "lead_days": 14,
+        "unit_cost_usd": 8500
+      },
+      {
+        "part_name": "Bearing Seals Kit",
+        "part_number": "SEAL-BRG-KIT",
+        "qty": 1,
+        "lead_days": 3,
+        "unit_cost_usd": 180
+      },
+      {
+        "part_name": "ISO VG 320 Gear Oil (20L)",
+        "part_number": "OIL-VG320-20",
+        "qty": 2,
+        "lead_days": 1,
+        "unit_cost_usd": 95
+      },
+      {
+        "part_name": "Fastener Set",
+        "part_number": "FAST-GEN-001",
+        "qty": 1,
+        "lead_days": 1,
+        "unit_cost_usd": 45
+      }
+    ],
+    "supplier_notes": "Expedited shipping required for Main Shaft Bearing (P/N: BRG-MSB-001) to meet the 3-day deadline."
+  },
+  "executive_summary": "Turbine WTG-002 has triggered a HIGH risk alert due to a bearing failure, which is likely caused by excessive bearing temperature resulting from inadequate cooling. This fault poses a significant risk to the turbine's operation and longevity, with an estimated remaining useful life of 16.9 days. Immediate action is required to prevent further damage, and we recommend shutting down the turbine within the next 3 days for maintenance to replace the bearing and inspect affected components. A thorough maintenance procedure will be followed to ensure safe shutdown and minimize downtime.",
+  "pipeline_errors": []
+}

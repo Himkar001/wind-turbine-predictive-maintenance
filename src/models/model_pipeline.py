@@ -290,50 +290,36 @@ class PredictiveMaintenancePipeline:
 # Main
 # ───────────────────────────────────────────────
 
-def run_pipeline_demo(
-    sample_path: str = "data/processed/test.parquet",
-    ):
+def run_pipeline_demo():
 
     logger.info("=" * 60)
-    logger.info("Unified Pipeline Demo")
+    logger.info("Unified Pipeline Demo — FULL DATASET")
     logger.info("=" * 60)
 
-    df = pd.read_parquet(sample_path)
+    # Load ALL splits — test only misses the active fault windows
+    train = pd.read_parquet("data/processed/train.parquet")
+    val   = pd.read_parquet("data/processed/val.parquet")
+    test  = pd.read_parquet("data/processed/test.parquet")
 
-    logger.info("Loaded %d rows × %d columns from %s", len(df), df.shape[1], sample_path)
-    logger.info("Turbines in test set: %s", df["turbine_id"].unique().tolist())
+    df = pd.concat([train, val, test], ignore_index=True)
+    df = df.sort_values(["turbine_id", "timestamp"]).reset_index(drop=True)
 
-    # Run on full test set (all turbines, no cap)
-    sample_df = df.copy()
+    logger.info(f"Loaded {len(df):,} rows across all splits")
+    logger.info(f"Turbines: {df['turbine_id'].unique().tolist()}")
 
     pipeline = PredictiveMaintenancePipeline()
-
     pipeline.load_models()
+    results = pipeline.predict(df)
 
-    results = pipeline.predict(sample_df)
-
-    logger.info(results.head())
-
-    # Save demo output
     output_path = Path("outputs")
-
-    output_path.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
-
+    output_path.mkdir(parents=True, exist_ok=True)
     save_file = output_path / "pipeline_predictions.parquet"
-
     results.to_parquet(save_file)
 
-    logger.info(
-        f"Predictions saved → {save_file}"
-    )
-
+    logger.info(f"Saved {len(results):,} rows → {save_file}")
     logger.info("=" * 60)
     logger.info("Pipeline demo complete")
     logger.info("=" * 60)
-
     return results
 
 

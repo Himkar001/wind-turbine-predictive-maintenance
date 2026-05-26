@@ -23,7 +23,7 @@ ENV/
 data/raw/
 data/processed/
 data/models/
- 
+data/chroma_db
 # Allow data/README.md to be tracked
 !data/README.md
  

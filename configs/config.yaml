@@ -58,7 +58,7 @@ faults:
   fault_probability: 0.15
 
 data_generation:
-  days: 90
+  days: 180
   output_dir: "data/raw"
   train_split: 0.70
   val_split: 0.15

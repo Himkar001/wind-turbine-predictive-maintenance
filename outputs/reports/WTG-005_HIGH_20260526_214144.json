@@ -1,0 +1,83 @@
+{
+  "turbine_id": "WTG-005",
+  "timestamp": "2026-01-26 03:14:18.579214",
+  "generated_at": "2026-05-26T21:41:44.480919+00:00",
+  "report_path": "outputs\\reports\\WTG-005_HIGH_20260526_214144.md",
+  "alert": {
+    "risk_score": 0.7621199488639832,
+    "risk_tier": "HIGH",
+    "anomaly_score": 0.9513612985610962,
+    "fault_type": "generator_overheating",
+    "fault_confidence": 0.9479154348373413,
+    "rul_days": 29.69029998779297,
+    "rul_urgency": "low"
+  },
+  "rca": {
+    "primary_cause": "The generator is overheating due to excessive thermal stress caused by high rotor speed and wind speed fluctuations.",
+    "causal_chain": [
+      "High wind speed fluctuations (wind_speed_std_5min=2.8378, wind_speed_std_30min=1.5533) \u2192",
+      "Increased rotor speed fluctuations (rotor_speed_std_5min=3.2041, rotor_speed_std_30min=1.9389) \u2192",
+      "Excessive thermal stress on the generator (generator_temp_mean_5min=4.1415, generator_temp_std_5min=2.0915) \u2192",
+      "Generator overheating (generator_temp_mean_2hr=3.8061, generator_temp_std_2hr=1.5291)"
+    ],
+    "affected_components": [
+      "Generator",
+      "rotor",
+      "wind turbine blades"
+    ],
+    "confidence": "HIGH"
+  },
+  "recommendation": {
+    "procedure": " Inspect the cooling air filter and replace it if the pressure drop is greater than 50% of the new filter specification. Check the cooling fan rotation and belt tension, and verify that the derating curve is applied at high ambient temperatures. Measure the generator current in all three phases to check for any winding problems.",
+    "safety_warnings": [
+      "High wind speed fluctuations may cause the turbine to experience increased rotor speed fluctuations, leading to excessive thermal stress on the generator.",
+      "Generator overheating can lead to insulation failure and rewinding, resulting in costly repairs and potential safety hazards."
+    ],
+    "estimated_downtime": "8 hours"
+  },
+  "schedule": {
+    "priority_rank": 2,
+    "recommended_action": "Perform a high-priority maintenance procedure to inspect and replace the cooling air filter, check the cooling fan rotation and belt tension, and verify the derating curve application.",
+    "maintenance_type": "corrective",
+    "deadline_days": 3,
+    "assigned_team": "Mechanical Team A",
+    "estimated_downtime_hours": 8.0
+  },
+  "parts": {
+    "order_urgency": "immediate",
+    "estimated_cost_usd": 375.0,
+    "required_parts": [
+      {
+        "part_name": "Nacelle Air Filter",
+        "part_number": "FILT-AIR-NCL",
+        "qty": 2,
+        "lead_days": 2,
+        "unit_cost_usd": 65
+      },
+      {
+        "part_name": "Cooling Fan Belt",
+        "part_number": "BELT-FAN-001",
+        "qty": 1,
+        "lead_days": 3,
+        "unit_cost_usd": 85
+      },
+      {
+        "part_name": "Cooling Fan Motor",
+        "part_number": "MOT-FAN-001",
+        "qty": 1,
+        "lead_days": 7,
+        "unit_cost_usd": 450
+      },
+      {
+        "part_name": "Temperature Sensor PT100",
+        "part_number": "SEN-TMP-PT100",
+        "qty": 2,
+        "lead_days": 3,
+        "unit_cost_usd": 75
+      }
+    ],
+    "supplier_notes": "Ensure expedited shipping for all parts to meet the 3-day deadline."
+  },
+  "executive_summary": "Turbine WTG-005 has triggered a HIGH risk alert due to a generator overheating issue, which poses a significant threat to the turbine's Remaining Useful Life. The root cause is attributed to excessive thermal stress caused by high rotor speed and wind speed fluctuations. To mitigate this issue, a high-priority maintenance procedure is required to inspect and replace the cooling air filter, check the cooling fan rotation and belt tension, and verify the derating curve application. This work must be completed within the next 3 days to prevent further damage and ensure the turbine's safe operation.",
+  "pipeline_errors": []
+}

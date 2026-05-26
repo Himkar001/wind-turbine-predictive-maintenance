@@ -1,0 +1,60 @@
+{
+  "turbine_id": "WTG-002",
+  "timestamp": "2026-05-02 11:45:20.022238",
+  "generated_at": "2026-05-26T21:22:45.612121+00:00",
+  "report_path": "outputs\\reports\\WTG-002_HIGH_20260526_212245.md",
+  "alert": {
+    "risk_score": 0.8085619807243347,
+    "risk_tier": "HIGH",
+    "anomaly_score": 0.8784650564193726,
+    "fault_type": "normal",
+    "fault_confidence": 0.9400848150253296,
+    "rul_days": 16.904403686523438,
+    "rul_urgency": "low"
+  },
+  "rca": {
+    "primary_cause": "The turbine is experiencing a high risk of bearing failure due to excessive bearing temperature.",
+    "causal_chain": [
+      "The bearing temperature is elevated (bearing_temp = 4.0591), indicating a potential thermal issue.",
+      "The elevated bearing temperature is causing a significant increase in the bearing stress index (bearing_stress_index = -0.3257), which is a key indicator of bearing health.",
+      "The increased bearing stress index is likely a result of the bearing's inability to dissipate heat effectively, leading to a high risk of bearing failure."
+    ],
+    "affected_components": [
+      "bearing",
+      "bearing stress index sensor"
+    ],
+    "confidence": "HIGH"
+  },
+  "recommendation": {
+    "procedure": " The technician should follow the Bearing Failure \u2014 Diagnosis & Replacement Procedure to diagnose and replace the bearing. This involves confirming the bearing temperature trend, performing vibration spectrum analysis, checking oil samples, and inspecting the bearing housing. If the bearing is found to be faulty, the technician should proceed with the replacement procedure, which includes shutting down the turbine, draining the gearbox oil, removing the old bearing, and installing a new one.",
+    "safety_warnings": [
+      "Never exceed 110\u00b0C when heating the new bearing.",
+      "Never access the blade root during high winds (>8 m/s at hub height)."
+    ],
+    "estimated_downtime": "24 hours"
+  },
+  "schedule": {
+    "priority_rank": 2,
+    "recommended_action": "Schedule a corrective maintenance task to replace the bearing on WTG-002.",
+    "maintenance_type": "corrective",
+    "deadline_days": 3,
+    "assigned_team": "Mechanical Team A",
+    "estimated_downtime_hours": 24.0
+  },
+  "parts": {
+    "order_urgency": "immediate",
+    "estimated_cost_usd": 850.0,
+    "required_parts": [
+      {
+        "part_name": "Consumables Kit (monitor)",
+        "part_number": "CONS-MON-001",
+        "qty": 1,
+        "lead_days": 7,
+        "unit_cost_usd": 50
+      }
+    ],
+    "supplier_notes": "Ensure expedited shipping for the bearing replacement to meet the 3-day deadline."
+  },
+  "executive_summary": "Turbine WTG-002 has triggered a HIGH risk alert due to a high risk of bearing failure caused by excessive bearing temperature. This fault is considered serious as it may lead to catastrophic failure and downtime, resulting in significant losses. We recommend scheduling a corrective maintenance task to replace the bearing on WTG-002 within the next 3 days to prevent potential damage. The technician should follow the established Bearing Failure \u2014 Diagnosis & Replacement Procedure to ensure a safe and efficient replacement.",
+  "pipeline_errors": []
+}

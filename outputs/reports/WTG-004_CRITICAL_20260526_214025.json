@@ -1,0 +1,83 @@
+{
+  "turbine_id": "WTG-004",
+  "timestamp": "2025-12-27 10:17:02.748914",
+  "generated_at": "2026-05-26T21:40:25.035319+00:00",
+  "report_path": "outputs\\reports\\WTG-004_CRITICAL_20260526_214025.md",
+  "alert": {
+    "risk_score": 0.8631750345230103,
+    "risk_tier": "CRITICAL",
+    "anomaly_score": 0.8421043157577515,
+    "fault_type": "bearing_failure",
+    "fault_confidence": 0.9437085390090942,
+    "rul_days": 6.148458480834961,
+    "rul_urgency": "high"
+  },
+  "rca": {
+    "primary_cause": "The bearing failure is likely caused by excessive bearing stress due to high wind speeds and inadequate oil pressure.",
+    "causal_chain": [
+      "High wind speeds (wind_speed=3.9380) and rapid wind speed changes (wind_speed_roc=3.9388) led to increased rotor speed (rotor_speed=5.6925) and rapid rotor speed changes (rotor_speed_roc=4.6550).",
+      "The increased rotor speed and rapid changes caused excessive bearing stress (bearing_stress_index=-0.3258).",
+      "Inadequate oil pressure (oil_pressure=-0.6109) and declining oil pressure rate (oil_pressure_decline_rate=3.3302) failed to mitigate the bearing stress.",
+      "The excessive bearing stress resulted in bearing failure."
+    ],
+    "affected_components": [
+      "bearing",
+      "oil system",
+      "wind turbine blades"
+    ],
+    "confidence": "HIGH"
+  },
+  "recommendation": {
+    "procedure": " The technician should diagnose the bearing failure by confirming the bearing temperature trend, performing vibration spectrum analysis, checking the oil sample for metallic particles, and inspecting the bearing housing for discoloration or oil leakage. Then, replace the bearing by shutting down the turbine safely, draining the gearbox oil, removing the gearbox access panel, and using a hydraulic bearing puller to remove the old bearing. Finally, refill with fresh oil to specification and run the turbine at 50% load for 4 hours to monitor the temperature trend.",
+    "safety_warnings": [
+      "Never exceed 110\u00b0C when handling the new bearing.",
+      "Always use a hydraulic bearing puller to avoid damaging the bearing race."
+    ],
+    "estimated_downtime": "24 hours"
+  },
+  "schedule": {
+    "priority_rank": 1,
+    "recommended_action": "Schedule emergency maintenance to replace the bearing on WTG-004 due to bearing failure.",
+    "maintenance_type": "emergency",
+    "deadline_days": 0,
+    "assigned_team": "Mechanical Team A",
+    "estimated_downtime_hours": 24.0
+  },
+  "parts": {
+    "order_urgency": "immediate",
+    "estimated_cost_usd": 8820.0,
+    "required_parts": [
+      {
+        "part_name": "Main Shaft Bearing",
+        "part_number": "BRG-MSB-001",
+        "qty": 1,
+        "lead_days": 14,
+        "unit_cost_usd": 8500
+      },
+      {
+        "part_name": "Bearing Seals Kit",
+        "part_number": "SEAL-BRG-KIT",
+        "qty": 1,
+        "lead_days": 3,
+        "unit_cost_usd": 180
+      },
+      {
+        "part_name": "ISO VG 320 Gear Oil (20L)",
+        "part_number": "OIL-VG320-20",
+        "qty": 2,
+        "lead_days": 1,
+        "unit_cost_usd": 95
+      },
+      {
+        "part_name": "Fastener Set",
+        "part_number": "FAST-GEN-001",
+        "qty": 1,
+        "lead_days": 1,
+        "unit_cost_usd": 45
+      }
+    ],
+    "supplier_notes": "Expedited shipping required for Main Shaft Bearing (P/N: BRG-MSB-001) due to critical risk tier and short lead time."
+  },
+  "executive_summary": "Turbine WTG-004 has triggered a critical risk alert due to a bearing failure, which is likely caused by excessive bearing stress and inadequate oil pressure. This fault poses a significant risk to the turbine's operation and requires immediate attention. We recommend scheduling emergency maintenance to replace the bearing as soon as possible, with a deadline of today. The technician should follow a specific procedure to diagnose and replace the bearing, ensuring a safe and efficient repair.",
+  "pipeline_errors": []
+}

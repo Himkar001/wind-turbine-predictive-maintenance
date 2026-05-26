@@ -1,0 +1,82 @@
+{
+  "turbine_id": "WTG-003",
+  "timestamp": "2026-02-10 22:41:06.334983",
+  "generated_at": "2026-05-26T21:40:33.001883+00:00",
+  "report_path": "outputs\\reports\\WTG-003_HIGH_20260526_214033.md",
+  "alert": {
+    "risk_score": 0.8624582290649414,
+    "risk_tier": "HIGH",
+    "anomaly_score": 0.9134554266929626,
+    "fault_type": "gearbox_fault",
+    "fault_confidence": 0.8813705444335938,
+    "rul_days": 8.802099227905273,
+    "rul_urgency": "medium"
+  },
+  "rca": {
+    "primary_cause": "The gearbox is likely experiencing a fault due to excessive vibration caused by a malfunctioning bearing.",
+    "causal_chain": [
+      "The vibration sensor reading (2.9466) is significantly higher than the normalised baseline value, indicating excessive vibration.",
+      "The high vibration is affecting the gearbox, which is a critical component that relies on smooth rotation to function properly.",
+      "The excessive vibration is likely caused by a malfunctioning bearing, which is a common root cause of gearbox faults."
+    ],
+    "affected_components": [
+      "gearbox",
+      "bearing",
+      "vibration sensor"
+    ],
+    "confidence": "HIGH"
+  },
+  "recommendation": {
+    "procedure": "Inspect the gearbox for excessive vibration and oil degradation by following the Inspection Procedure outlined in the Gearbox Fault \u2014 Inspection & Oil Management document. This includes collecting an oil sample, inspecting the magnetic chip detector, and performing a borescope inspection of gear teeth and the planet carrier. Additionally, check the oil filter differential pressure and inspect the oil cooler for blockage or leakage.",
+    "safety_warnings": [
+      "Wear personal protective equipment (PPE) when working with electrical and mechanical components.",
+      "Ensure the turbine is de-energized and locked out before performing any maintenance."
+    ],
+    "estimated_downtime": "12 hours"
+  },
+  "schedule": {
+    "priority_rank": 2,
+    "recommended_action": "Perform gearbox inspection and oil management procedure on WTG-003 to diagnose and address the gearbox fault.",
+    "maintenance_type": "corrective",
+    "deadline_days": 2,
+    "assigned_team": "Mechanical Team A",
+    "estimated_downtime_hours": 12.0
+  },
+  "parts": {
+    "order_urgency": "immediate",
+    "estimated_cost_usd": 690.0,
+    "required_parts": [
+      {
+        "part_name": "Gearbox Oil Filter",
+        "part_number": "FILT-GBX-001",
+        "qty": 2,
+        "lead_days": 2,
+        "unit_cost_usd": 95
+      },
+      {
+        "part_name": "Magnetic Chip Detector",
+        "part_number": "DET-MAG-001",
+        "qty": 1,
+        "lead_days": 3,
+        "unit_cost_usd": 180
+      },
+      {
+        "part_name": "ISO VG 320 Gear Oil (20L)",
+        "part_number": "OIL-VG320-20",
+        "qty": 4,
+        "lead_days": 1,
+        "unit_cost_usd": 95
+      },
+      {
+        "part_name": "Gearbox Seal Kit",
+        "part_number": "SEAL-GBX-KIT",
+        "qty": 1,
+        "lead_days": 5,
+        "unit_cost_usd": 420
+      }
+    ],
+    "supplier_notes": "Ensure suppliers can deliver parts within the 2-day deadline."
+  },
+  "executive_summary": "Turbine WTG-003 has triggered a HIGH risk alert due to a gearbox fault, which is likely caused by a malfunctioning bearing resulting in excessive vibration. This fault poses a significant risk to the turbine's operation and requires immediate attention. We recommend performing a gearbox inspection and oil management procedure within the next 2 days to diagnose and address the issue. This will involve inspecting the gearbox for excessive vibration and oil degradation, and taking corrective action to prevent further damage.",
+  "pipeline_errors": []
+}
