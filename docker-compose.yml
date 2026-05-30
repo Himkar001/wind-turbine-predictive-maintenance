@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  # ── FastAPI Backend ─────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: windsense-api
+    ports:
+      - "8000:8000"
+    volumes:
+      # Mount outputs so Phase 4 parquet files are accessible
+      - ./outputs:/app/outputs
+      # Mount reports directory for agent-generated reports
+      - ./outputs/reports:/app/outputs/reports
+    env_file:
+      - .env
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - windsense-net
+
+  # ── React Frontend ──────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: windsense-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - windsense-net
+
+networks:
+  windsense-net:
+    driver: bridge
+
+volumes:
+  outputs:
