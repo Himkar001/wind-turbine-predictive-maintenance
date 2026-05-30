@@ -1,131 +1,388 @@
-# WindSense AI - Predictive Maintenance & Digital Twin
+Your current README is good technically, but it reads more like documentation than a professional GitHub project page. Based on the actual scope of WindSense AI from your project history (Digital Twin + ML + LangGraph + FastAPI + React), I would make it look more like an industry-grade AI/ML portfolio project. The uploaded README currently focuses on the pipeline but does not strongly sell the business value, architecture maturity, and Agentic AI aspects. 
 
-An advanced, Agentic AI-powered predictive maintenance system for wind turbine fleets. WindSense AI combines high-frequency telemetry, Machine Learning (Anomaly Detection, Fault Classification, Remaining Useful Life), and a LangGraph-based AI Orchestrator to autonomously detect, diagnose, and report mechanical faults before they lead to catastrophic failure.
+# Recommended README Structure
 
-## 🏗️ System Architecture
+````md
+# 🌪️ WindSense AI
+### Agentic AI-Powered Predictive Maintenance & Digital Twin Platform for Wind Turbines
+
+WindSense AI is an end-to-end Industrial AI platform designed to predict equipment failures before they occur.
+
+The system continuously monitors wind turbine telemetry, detects micro-anomalies, predicts component failures, estimates Remaining Useful Life (RUL), and autonomously generates maintenance recommendations using Agentic AI.
+
+By combining:
+
+- Digital Twins
+- Machine Learning
+- Time-Series Analytics
+- Retrieval-Augmented Generation (RAG)
+- Multi-Agent Systems
+- Real-Time Monitoring
+
+WindSense AI enables maintenance teams to transition from:
+
+**Reactive Maintenance → Preventive Maintenance → Predictive Maintenance → Autonomous Maintenance**
+
+---
+
+# 🎯 Business Problem
+
+Unexpected turbine failures can result in:
+
+- Expensive emergency repairs
+- Unplanned downtime
+- Loss of energy production
+- Safety risks
+- Reduced turbine lifespan
+
+Traditional monitoring systems generate thousands of alerts daily but provide little insight into:
+
+- Why the issue occurred
+- Which component is failing
+- How urgently maintenance is required
+- What actions should be taken
+
+WindSense AI addresses these challenges through intelligent diagnostics and autonomous decision support.
+
+---
+
+# 🚀 Key Features
+
+## Digital Twin Simulation
+
+Creates a virtual representation of turbine behavior and continuously compares:
+
+Expected Behavior vs Actual Behavior
+
+This enables early detection of hidden degradation patterns.
+
+---
+
+## Anomaly Detection
+
+Isolation Forest identifies abnormal operating conditions before visible failures occur.
+
+Examples:
+
+- Bearing temperature spikes
+- Vibration abnormalities
+- Oil pressure drops
+- Generator overheating
+
+---
+
+## Fault Classification
+
+XGBoost predicts the most probable fault category.
+
+Supported Fault Types:
+
+- Bearing Failure
+- Gearbox Failure
+- Generator Overheating
+- Blade Imbalance
+- Oil Leakage
+- Electrical Fault
+
+---
+
+## Remaining Useful Life (RUL)
+
+Predicts:
+
+> How many days remain before a component reaches critical failure.
+
+Maintenance teams can schedule repairs proactively.
+
+---
+
+## Risk Scoring Engine
+
+Combines:
+
+- Anomaly Score
+- Fault Confidence
+- RUL Prediction
+- Digital Twin Deviation
+
+to produce:
+
+| Risk Score | Tier |
+|------------|------|
+| 0.0–0.25 | LOW |
+| 0.25–0.50 | MEDIUM |
+| 0.50–0.75 | HIGH |
+| 0.75–1.00 | CRITICAL |
+
+---
+
+# 🤖 Agentic AI Layer
+
+Unlike traditional predictive maintenance systems, WindSense AI includes autonomous AI agents.
+
+## Orchestrator Agent
+
+Coordinates all agents using LangGraph.
+
+Responsibilities:
+
+- Monitor risk levels
+- Trigger investigations
+- Route tasks
+
+---
+
+## RCA Agent
+
+Performs Root Cause Analysis.
+
+Example:
+
+"Rapid bearing temperature increase combined with declining oil pressure suggests lubrication failure."
+
+---
+
+## RAG Agent
+
+Retrieves:
+
+- OEM Manuals
+- SOPs
+- Maintenance Procedures
+- Historical Repair Logs
+
+from ChromaDB.
+
+---
+
+## Parts Planning Agent
+
+Determines:
+
+- Required replacement parts
+- Inventory needs
+- Maintenance preparation
+
+---
+
+## Report Agent
+
+Generates executive maintenance reports automatically.
+
+Output includes:
+
+- Fault diagnosis
+- Risk level
+- RUL estimate
+- Maintenance recommendations
+- Parts list
+
+---
+
+# 🏗 System Architecture
 
 ```mermaid
 flowchart TD
-    %% Data Layer
-    subgraph Data Layer
-        A[Simulated SCADA Telemetry] --> B(Data Preprocessing & Feature Engineering)
-        B --> C[(Parquet Data Store)]
-    end
 
-    %% ML Pipeline
-    subgraph ML Pipeline
-        C --> D{Digital Twin Engine}
-        C --> E[Anomaly Detection<br/>Isolation Forest]
-        D --> E
-        E --> F[Fault Classification<br/>XGBoost]
-        E --> G[RUL Prediction<br/>Random Forest]
-        F --> H((Risk Scoring Engine))
-        G --> H
-        H --> I[(Risk Scores Parquet)]
-    end
+A[SCADA Sensor Data]
+--> B[Data Preprocessing]
 
-    %% AI Agents Layer
-    subgraph AI Agents (LangGraph)
-        I -.->|Triggers on HIGH risk| J[Orchestrator Agent]
-        J --> K[RCA Agent<br/>Groq Llama-3]
-        J --> L[RAG Agent<br/>ChromaDB]
-        K --> M[Report Agent<br/>Executive Summary]
-        L --> M
-    end
+B --> C[Digital Twin Engine]
 
-    %% Application Layer
-    subgraph Application Layer
-        I --> N[FastAPI Backend]
-        M --> N
-        N <-->|REST & WebSockets| O[React Dashboard<br/>Vite + Tailwind]
-    end
+B --> D[Isolation Forest]
+
+C --> D
+
+D --> E[Fault Classifier]
+
+D --> F[RUL Predictor]
+
+E --> G[Risk Scoring Engine]
+F --> G
+
+G --> H[LangGraph Orchestrator]
+
+H --> I[RCA Agent]
+H --> J[RAG Agent]
+H --> K[Parts Agent]
+
+I --> L[Report Agent]
+J --> L
+K --> L
+
+L --> M[FastAPI Backend]
+
+M --> N[React Dashboard]
+````
+
+---
+
+# 📊 Dataset Overview
+
+### Fleet
+
+* 5 Wind Turbines
+* WTG-001 → WTG-005
+
+### Telemetry Volume
+
+* 7.7+ Million Records
+* Multi-Year Operational History
+
+### Sensor Streams
+
+| Mechanical          | Electrical      |
+| ------------------- | --------------- |
+| Rotor Speed         | Active Power    |
+| Bearing Temperature | Generator Speed |
+| Gearbox Temperature | Power Output    |
+| Oil Pressure        | Voltage Metrics |
+
+Additional:
+
+* Vibration Sensors
+* Pitch Angle
+* Wind Speed
+* Oil Temperature
+
+---
+
+# 🔬 Feature Engineering
+
+### Statistical Features
+
+* Rolling Mean
+* Rolling Std
+* EWMA
+
+### Trend Features
+
+* Rate of Change
+* Temperature Gradient
+* Vibration Growth
+
+### Digital Twin Features
+
+* Residual Error
+* Normalized Residual
+* Twin Deviation Score
+
+### Health Indicators
+
+* Fault Signatures
+* Degradation Scores
+* Historical Failure Distance
+
+---
+
+# 🧠 Machine Learning Stack
+
+| Task                 | Model            |
+| -------------------- | ---------------- |
+| Anomaly Detection    | Isolation Forest |
+| Fault Classification | XGBoost          |
+| RUL Prediction       | Random Forest    |
+| Root Cause Analysis  | Groq Llama       |
+| Knowledge Retrieval  | ChromaDB         |
+| Agent Orchestration  | LangGraph        |
+
+---
+
+# 🌐 Technology Stack
+
+## AI / ML
+
+* Scikit-Learn
+* XGBoost
+* LangGraph
+* ChromaDB
+* Groq Llama
+
+## Backend
+
+* FastAPI
+* WebSockets
+
+## Frontend
+
+* React
+* Vite
+* TailwindCSS
+
+## Data Processing
+
+* Pandas
+* PyArrow
+* NumPy
+
+---
+
+# 📁 Project Structure
+
+```text
+wind-turbine-predictive-maintenance/
+
+├── src/
+│   ├── agents/
+│   ├── api/
+│   ├── models/
+│   ├── data/
+│   ├── twin/
+│   └── rag/
+│
+├── frontend/
+│
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── models/
+│
+├── configs/
+│
+└── outputs/
 ```
 
-## 📊 Data Pipeline & Feature Engineering
+---
 
-### 1. The Dataset
-The project uses high-frequency simulated SCADA telemetry for a fleet of 5 wind turbines (WTG-001 to WTG-005) recorded at 10-minute intervals over a 3-year period (over 7.7 million rows).
-**Core Sensors Tracked**:
-- `wind_speed`, `rotor_speed`, `generator_speed`
-- `active_power`, `pitch_angle`
-- `gearbox_temperature`, `bearing_temperature`
-- `vibration_nacelle`, `vibration_generator`
-- `oil_pressure`, `oil_temperature`
+# 🚀 Running the Project
 
-### 2. Feature Engineering
-Raw data is processed using heavily optimized PyArrow and Pandas pipelines. Engineered features include:
-- **Rolling Windows**: 3-hour, 24-hour, and 7-day rolling means and standard deviations to capture short-term spikes and long-term degradation.
-- **Exponentially Weighted Moving Averages (EWMA)**: To smooth noise while retaining sensitivity to sudden shifts.
-- **Differentials & Gradients**: Rate of change for temperatures (`gearbox_temp_diff`, `bearing_temp_diff`).
-- **Digital Twin Residuals**: A physics-informed digital twin models the *expected* behavior (e.g., expected active power given current wind speed). The residuals (Actual - Expected) are fed as features to the ML models.
-
-## 🧠 Machine Learning Models
-
-### Anomaly Detection (Isolation Forest)
-Detects when a turbine deviates from normal operational boundaries.
-- **Target Features**: Digital twin residuals, current temperatures, vibration metrics, and 3-hour rolling averages.
-- **Output**: Anomaly Score (-1 to 1) and binary Anomaly Flag.
-
-### Fault Classification (XGBoost)
-When an anomaly is detected, this model classifies the specific type of failure.
-- **Target Features**: Temperature gradients, cross-sensor ratios (e.g., generator speed vs. active power), vibration standard deviations, and oil pressure anomalies.
-- **Fault Classes**: `gearbox_fault`, `generator_fault`, `bearing_fault`, `pitch_fault`, `normal`.
-
-### Remaining Useful Life (RUL) Prediction (Random Forest)
-Estimates the number of days until a component reaches critical failure.
-- **Target Features**: Cumulative degradation signatures (running sum of anomaly scores), 7-day rolling standard deviations, and distance from historical failure thresholds.
-- **Output**: Estimated RUL in days.
-
-### Risk Scoring Engine
-A heuristic engine that combines the Anomaly Score, Fault Confidence, and RUL into a normalized `overall_risk_score` (0.0 to 1.0). This maps directly to risk tiers (`LOW`, `MEDIUM`, `HIGH`, `CRITICAL`).
-
-## 🤖 Agentic AI Workflow (LangGraph)
-
-The system features an autonomous diagnostic workflow powered by LangGraph, Groq (Llama-3), and ChromaDB.
-
-1. **Orchestrator Agent**: Monitors the Risk Scores. If a turbine enters `HIGH` or `CRITICAL` status, it triggers the diagnostic pipeline.
-2. **RCA (Root Cause Analysis) Agent**: Ingests the 50 most recent SCADA telemetry rows for the anomalous turbine. Uses LLM reasoning to hypothesize the physical cause of the fault based on sensor trends (e.g., "rapid temperature rise combined with oil pressure drop indicates bearing lubrication failure").
-3. **RAG Agent**: Takes the predicted fault class and searches a ChromaDB vector store containing OEM maintenance manuals, SOPs, and historical repair logs to retrieve the exact repair procedure.
-4. **Report Agent**: Synthesizes the RCA hypothesis, RAG repair procedures, and live metrics into a final markdown executive summary, delivered instantly to the React dashboard.
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+
-- Python 3.10+
-- A Groq API Key (for LLM inference)
-
-### 1. Backend Setup
+## Backend
 
 ```bash
-# Create and activate virtual environment
 python -m venv venv
-source venv/bin/activate  # Or `venv\Scripts\activate` on Windows
 
-# Install dependencies
+venv\Scripts\activate
+
 pip install -r requirements.txt
 
-# Environment variables
-cp .env.example .env
-# Edit .env and add your GROQ_API_KEY
-
-# Run the API server
-uvicorn src.api.main:app --host 0.0.0.0 --port 8000
+uvicorn src.api.main:app --reload
 ```
 
-### 2. Frontend Setup
+## Frontend
 
 ```bash
 cd frontend
 
-# Install dependencies
 npm install
 
-# Start the dev server
 npm run dev
 ```
 
-The application will be accessible at `http://localhost:3000`.
+---
 
-## 📄 License
-MIT License
+# 🔮 Future Enhancements
+
+* Kafka Real-Time Streaming
+* Live Digital Twin Dashboard
+* Transformer-Based Anomaly Detection
+* Multi-Agent Maintenance Scheduling
+* Inventory Optimization Agent
+* Azure Cloud Deployment
+* Predictive Maintenance Chatbot
+* Autonomous Work Order Generation
+
+---
+
+# Author 
+ HIMKAR VASHISTHA
+ 
