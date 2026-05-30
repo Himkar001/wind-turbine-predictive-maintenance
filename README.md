@@ -1,8 +1,3 @@
-Your current README is good technically, but it reads more like documentation than a professional GitHub project page. Based on the actual scope of WindSense AI from your project history (Digital Twin + ML + LangGraph + FastAPI + React), I would make it look more like an industry-grade AI/ML portfolio project. The uploaded README currently focuses on the pipeline but does not strongly sell the business value, architecture maturity, and Agentic AI aspects. 
-
-# Recommended README Structure
-
-````md
 # 🌪️ WindSense AI
 ### Agentic AI-Powered Predictive Maintenance & Digital Twin Platform for Wind Turbines
 
